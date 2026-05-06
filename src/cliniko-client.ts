@@ -1,15 +1,24 @@
 import { Patient, Appointment, Practitioner, Business, AppointmentType, AvailableTime, ClinikoListResponse, Invoice, InvoiceItem, Payment, Product, Tax, PatientCase } from './types.js';
 
 export class ClinikoClient {
-  private baseUrl = 'https://api.au4.cliniko.com/v1';
+  private baseUrl: string;
   private headers: HeadersInit;
 
   constructor(apiKey: string) {
+    // Cliniko keys are formatted: KEY-SHARDID (e.g. "...-au1", "-au5", "-uk1").
+    // Parse the shard from the trailing suffix and route to the right API host.
+    const trimmed = apiKey.trim();
+    const lastDash = trimmed.lastIndexOf('-');
+    const SHARD_RE = /^[a-z]{2}\d{1,2}$/i;
+    const candidate = lastDash >= 0 ? trimmed.slice(lastDash + 1) : '';
+    const shard = SHARD_RE.test(candidate) ? candidate.toLowerCase() : 'au1';
+    this.baseUrl = `https://api.${shard}.cliniko.com/v1`;
+
     // Use browser-compatible Base64 encoding instead of Buffer
-    const base64Auth = typeof btoa !== 'undefined' 
-      ? btoa(apiKey + ':') 
-      : Buffer.from(apiKey + ':').toString('base64');
-      
+    const base64Auth = typeof btoa !== 'undefined'
+      ? btoa(trimmed + ':')
+      : Buffer.from(trimmed + ':').toString('base64');
+
     this.headers = {
       'Authorization': `Basic ${base64Auth}`,
       'Accept': 'application/json',
