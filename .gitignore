@@ -60,3 +60,6 @@ Thumbs.db
 
 # MCP specific
 memories.json
+
+# .mcpb build artifacts
+*.mcpb
