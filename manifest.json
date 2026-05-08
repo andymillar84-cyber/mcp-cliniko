@@ -32,7 +32,7 @@
     "api_key": {
       "type": "string",
       "title": "Cliniko API Key",
-      "description": "Find this in Cliniko: Settings → My Info → Manage API Keys → Generate API Key. Paste the whole key (it ends in something like -au5 or -uk1). Keep no spaces before or after.",
+      "description": "Enter your API key here",
       "required": true,
       "sensitive": true
     }
