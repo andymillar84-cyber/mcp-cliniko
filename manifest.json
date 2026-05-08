@@ -1,0 +1,40 @@
+{
+  "manifest_version": "0.3",
+  "name": "mcp-cliniko",
+  "version": "1.0.0",
+  "display_name": "Cliniko Connection for Claude",
+  "description": "Lets Claude look up your Cliniko appointments, patients, and clinic data when you ask in plain English.",
+  "long_description": "Connects Claude Desktop to your Cliniko clinic so you can ask questions like 'who has an appointment tomorrow?' or 'show me the patient notes for Jane Smith'. Reads and (optionally) writes data through Cliniko's official API. Your API key is stored securely in your computer's keychain — never in plain text.",
+  "author": {
+    "name": "Andrew Millar"
+  },
+  "homepage": "https://github.com/andymillar84-cyber/mcp-cliniko",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andymillar84-cyber/mcp-cliniko"
+  },
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["darwin", "win32"]
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"],
+      "env": {
+        "CLINIKO_API_KEY": "${user_config.api_key}"
+      }
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "Cliniko API Key",
+      "description": "Enter your API key here",
+      "required": true,
+      "sensitive": true
+    }
+  }
+}

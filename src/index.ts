@@ -9,12 +9,14 @@ import { registerSyntheticDataTools } from './tools/synthetic-data.js';
 import { registerEnhancedSyntheticDataTools } from './tools/synthetic-data-enhanced.js';
 import { registerInvoiceTools } from './tools/invoices.js';
 import { registerDemoInvoiceTools } from './tools/demo-invoice-generation.js';
+import { registerPingTools } from './tools/ping.js';
 import { registerResources } from './resources/index.js';
 
-const API_KEY = process.env.CLINIKO_API_KEY;
+const API_KEY = (process.env.CLINIKO_API_KEY || '').trim();
 
 if (!API_KEY) {
-  // Exit silently if no API key - MCP protocol doesn't allow stderr output
+  // Exit silently if no API key - MCP protocol doesn't allow stderr output.
+  // Note: trimmed above so a key pasted with trailing whitespace is treated as set.
   process.exit(1);
 }
 
@@ -61,6 +63,7 @@ registerSyntheticDataTools(toolRegistry, clinikoClient);
 registerEnhancedSyntheticDataTools(toolRegistry, clinikoClient);
 registerInvoiceTools(toolRegistry, clinikoClient);
 registerDemoInvoiceTools(toolRegistry, clinikoClient);
+registerPingTools(toolRegistry, clinikoClient);
 
 // Register all resources
 registerResources(resourceRegistry, clinikoClient);
